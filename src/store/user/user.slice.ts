@@ -122,7 +122,7 @@ export const addUserAddressAsync = createAsyncThunk(
     "user/addAddress",
     async (address : Address) =>{
         const TOKEN = cookies.get("cc_jwt_token");
-        const response = await fetch(`"${process.env.REACT_APP_SERVER}/user/addresses`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/user/addresses`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
