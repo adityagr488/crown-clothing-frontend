@@ -24,6 +24,7 @@ const Profile = () => {
 
     const dispatch = useDispatch<ActionDispatch>();
     const user = useSelector(selectCurrentUserDetails);
+    const userInitials = user?.name.split(" ");
     const addresses = user?.addresses;
     const addressFormRef = useRef<HTMLDivElement>(null);
     const [addressFormTitle, setAddressFormTitle] = useState("");
@@ -73,7 +74,8 @@ const Profile = () => {
                             <div className="flex justify-center items-center">
                                 <div className="w-20 h-20 md:w-28 md:h-28 bg-red-500 rounded-[50%] md:rounded-none flex items-center justify-center">
                                     <span className="text-white text-4xl">
-                                        {user.name[0]}
+                                        {userInitials![0][0]}
+                                        {userInitials!.length > 1 && userInitials![userInitials!.length - 1][0]}
                                     </span>
                                 </div>
                             </div>
@@ -89,50 +91,56 @@ const Profile = () => {
                     </div>
                     <div className="my-6">
                         <h2 className="text-2xl font-semibold mb-2">Saved Addresses:</h2>
-                        <div className="bg-white shadow-md p-2 rounded-md">
-                            {user?.addresses.map((address, idx) => {
-                                return (
-                                    <div className="mb-2 flex flex-col" key={idx}>
-                                        <div className="flex flex-col xl:flex-row xl:items-center">
-                                            <div className="p-2 mr-2 xl:w-1/2">
-                                                <div className="inline-flex items-center">
-                                                    <LocationIcon className="w-6 h-6" color="#756AB6" />
-                                                    <span className="ml-2 mb-2 text-xl font-bold">{address.tag}</span>
+                        {
+                            user.addresses.length <= 0 && <p className="text-center">You have not added any address.</p>
+                        }
+                        {
+                            user.addresses.length > 0 &&
+                            <div className="bg-white shadow-md p-2 rounded-md">
+                                {user?.addresses.map((address, idx) => {
+                                    return (
+                                        <div className="mb-2 flex flex-col" key={idx}>
+                                            <div className="flex flex-col xl:flex-row xl:items-center">
+                                                <div className="p-2 mr-2 xl:w-1/2">
+                                                    <div className="inline-flex items-center">
+                                                        <LocationIcon className="w-6 h-6" color="#756AB6" />
+                                                        <span className="ml-2 mb-2 text-xl font-bold">{address.tag}</span>
+                                                    </div>
+                                                    <div className="flex flex-col ml-7">
+                                                        <span className="mb-1">{address.houseNo}, {address.area}, {address.city}, {address.state} - {address.pincode}</span>
+                                                        <span className="mb-1 inline-flex items-center">
+                                                            <MobileIcon className="w-5 h-5" color="#756AB6" />
+                                                            {address.mobileNo}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <div className="flex flex-col ml-7">
-                                                    <span className="mb-1">{address.houseNo}, {address.area}, {address.city}, {address.state} - {address.pincode}</span>
-                                                    <span className="mb-1 inline-flex items-center">
-                                                        <MobileIcon className="w-5 h-5" color="#756AB6" />
-                                                        {address.mobileNo}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="ml-7 mt-3 pl-2 md:mr-2">
-                                                <button
-                                                    className="bg-orange-600 hover:bg-orange-700 active:bg-orange-800 
+                                                <div className="ml-7 mt-3 pl-2 md:mr-2">
+                                                    <button
+                                                        className="bg-orange-600 hover:bg-orange-700 active:bg-orange-800 
                                             px-3 py-2 text-white inline-flex items-center rounded-md"
-                                                    onClick={() => toggleFormVisibility(AddressFormType.UPDATE_ADDRESS, address.id)}
-                                                >
-                                                    <EditIcon className="w-5 h-5" color="white" />
-                                                    <span className="ml-1">Edit</span>
-                                                </button>
-                                                <button
-                                                    className="ml-4 bg-red-600 hover:bg-red-700 active:bg-red-800 px-3 py-2 
+                                                        onClick={() => toggleFormVisibility(AddressFormType.UPDATE_ADDRESS, address.id)}
+                                                    >
+                                                        <EditIcon className="w-5 h-5" color="white" />
+                                                        <span className="ml-1">Edit</span>
+                                                    </button>
+                                                    <button
+                                                        className="ml-4 bg-red-600 hover:bg-red-700 active:bg-red-800 px-3 py-2 
                                             text-white inline-flex items-center rounded-md"
-                                                    onClick={() => deleteAddress(address.id!)}
-                                                >
-                                                    <DeleteIcon className="w-5 h-5" color="white" />
-                                                    <span className="ml-1">Delete</span>
-                                                </button>
+                                                        onClick={() => deleteAddress(address.id!)}
+                                                    >
+                                                        <DeleteIcon className="w-5 h-5" color="white" />
+                                                        <span className="ml-1">Delete</span>
+                                                    </button>
+                                                </div>
                                             </div>
+                                            {
+                                                idx !== user.addresses.length - 1 && <hr className="ml-6 mt-3" />
+                                            }
                                         </div>
-                                        {
-                                            idx !== user.addresses.length - 1 && <hr className="ml-6 mt-3" />
-                                        }
-                                    </div>
-                                );
-                            })}
-                        </div>
+                                    );
+                                })}
+                            </div>
+                        }
                     </div>
 
                     {

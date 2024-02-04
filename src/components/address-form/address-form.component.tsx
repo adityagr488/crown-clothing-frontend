@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Address, addUserAddressAsync, updateUserAddressAsync } from "../../store/user/user.slice";
+import { Address, addUserAddressAsync, resetUserAddressError, updateUserAddressAsync } from "../../store/user/user.slice";
 import { ActionDispatch } from "../../store/store";
-import { selectUserAddressError, selectUserDetailsIsLoading } from "../../store/user/user.selector";
+import { selectCurrentUserDetails, selectUserAddressError, selectUserDetailsIsLoading } from "../../store/user/user.selector";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import FormInput from "../form-input/form-input.component";
 import { defaultAddressFieldValues } from "../../routes/profile/profile.route";
@@ -14,7 +14,7 @@ export const AddressFormType = {
 const AddressForm: React.FC<{title: string, toggleFormVisibility: any, addressFieldValues: Address, setAddressFieldValues: React.Dispatch<React.SetStateAction<Address>>}> = ({title, toggleFormVisibility, addressFieldValues, setAddressFieldValues}) => {
 
     const dispatch = useDispatch<ActionDispatch>();
-
+    const user = useSelector(selectCurrentUserDetails);
     const isLoading = useSelector(selectUserDetailsIsLoading);
     const addressError = useSelector(selectUserAddressError);
 
@@ -62,6 +62,14 @@ const AddressForm: React.FC<{title: string, toggleFormVisibility: any, addressFi
     const formSubmissionHandler = async (event: FormEvent) => {
         event.preventDefault();
         closeErrorhandler();
+        dispatch(resetUserAddressError());
+        const isAddressTagExists = user?.addresses.find((address)=> {
+            return (address.tag.toLowerCase() === addressFieldValues.tag.toLowerCase()) && (address.id !== addressFieldValues.id)
+        });
+        if(isAddressTagExists){
+            setMessage(`Address with tag '${addressFieldValues.tag}' already exists.`);
+            return;
+        }
         if(title === AddressFormType.ADD_ADDRESS){
             dispatch(addUserAddressAsync(addressFieldValues));
         }

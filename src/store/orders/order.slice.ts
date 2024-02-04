@@ -7,13 +7,12 @@ export enum PaymentType {
     UPI = "UPI",
     CREDIT_CARD = "CREDIT_CARD",
     DEBIT_CARD = "DEBIT_CARD",
-    NET_BANKING = "NET_BANKING",
     CASH = "CASH"
 }
 
 export interface Order {
     _id?: string
-    date : Date
+    order_date : Date
     items : CartItem[]
     totalItems: number
     totalAmount : number

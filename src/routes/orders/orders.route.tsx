@@ -38,7 +38,7 @@ const Orders = () => {
                                     <div className="px-6">
                                         <div className="mb-2">
                                             <span className="block md:inline">Order Date:</span>
-                                            <span className="md:ml-2">{new Date(order.date).toDateString()}</span>
+                                            <span className="md:ml-2">{new Date(order.order_date).toDateString()}</span>
                                         </div>
                                         <div className="my-2">
                                             <span className="block md:inline">Total Amount:</span>
@@ -55,7 +55,7 @@ const Orders = () => {
                                         </div>
                                         <div className="mt-2">
                                             <span className="block md:inline">Payment Type:</span>
-                                            <span className="md:ml-2">{order.paymentType}</span>
+                                            <span className="md:ml-2">{order.paymentType.replace("_"," ")}</span>
                                         </div>
                                     </div>
                                     <Link to={`/orders/${order._id}`} className="ml-auto">

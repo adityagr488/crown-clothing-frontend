@@ -25,14 +25,21 @@ const SideMenu: React.FC<{ menuVisibility: boolean, setMenuVisibility: React.Dis
         <div
             className={
                 (menuVisibility ? "translate-x-0" : "-translate-x-[100%]")
-                + " absolute z-10 left-0 top-14 bg-[#FFE5E5] transition duration-[500ms] lg:hidden h-full w-full md:w-1/3"
+                + " fixed z-10 left-0 top-0 bg-[#FFE5E5] transition duration-[500ms] lg:hidden h-full w-full md:w-1/2"
             }
         >
-            <div className="py-4 px-6 flex flex-col">
+            <div className="p-2 lg:hidden ml-2 mt-2 w-fit" onClick={toggleSideMenuVisibility}>
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#756AB6" className="w-8 h-8">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                }
+            </div>
+            <div className="px-6 flex flex-col">
                 {
                     !currentUser &&
                     <Link className="p-2 text-xl inline-flex items-center" to="/auth/login" onClick={toggleSideMenuVisibility}>
-                        <ProfileIcon className="w-6 h-6" color="#756AB6"/>
+                        <ProfileIcon className="w-6 h-6" color="#756AB6" />
                         <span className="ml-5 w-full text-[#C21292] font-serif">Login</span>
                     </Link>
                 }
@@ -46,13 +53,13 @@ const SideMenu: React.FC<{ menuVisibility: boolean, setMenuVisibility: React.Dis
                 {
                     currentUser &&
                     <div className="px-2 text-xl inline-flex items-center">
-                        <span className="text-[#C21292] font-serif border-b-2">Welcome <b>{currentUser.name}</b></span>
+                        <span className="text-[#C21292] font-serif border-b-2">Welcome <b>{currentUser.name.split(" ")[0]}</b></span>
                     </div>
                 }
                 {
                     currentUser &&
                     <Link className="p-2 text-xl inline-flex items-center" to="/profile" onClick={toggleSideMenuVisibility}>
-                        <ProfileIcon className="w-6 h-6" color="#756AB6"/>
+                        <ProfileIcon className="w-6 h-6" color="#756AB6" />
                         <span className="ml-5 w-full text-[#C21292] font-serif">My Profile</span>
                     </Link>
                 }

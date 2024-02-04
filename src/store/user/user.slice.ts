@@ -208,6 +208,9 @@ const userSlice = createSlice({
         setUserSessionExpirationError: (state, action)=>{
             state.error.sessionError = action.payload;
         },
+        resetUserAddressError: (state)=>{
+            state.error.addressError = undefined;
+        },
         signOutUser: (state) => {
             cookies.remove("cc_jwt_token");
             state.currentUser = undefined;
@@ -291,6 +294,6 @@ const userSlice = createSlice({
 
 const userReducer = userSlice.reducer;
 
-export const { setUserSessionExpirationError, setUserDropDownVisibility, signOutUser } = userSlice.actions;
+export const { setUserSessionExpirationError, setUserDropDownVisibility, signOutUser, resetUserAddressError } = userSlice.actions;
 
 export default userReducer;
